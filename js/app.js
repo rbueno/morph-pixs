@@ -78,3 +78,13 @@ class GamePlay {
     }
   }
 }
+
+let getClickY = 0;
+let getClickX = 0;
+document.querySelectorAll('.block').forEach((block, position) => {
+  block.onclick = () => {
+    getClickY = Math.ceil((position + 1) / 5) - 1
+    getClickX = Math.ceil((position) % 5)
+
+  }
+} )

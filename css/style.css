@@ -1,0 +1,19 @@
+
+
+.blocks-grid {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px 100px;
+}
+
+.grid {
+    width: 500px;
+    margin: 0 auto;
+    border: 2px solid red;
+}
+
+.block {
+    margin: 1px;
+    background: black;
+    height: 100px;
+}
+
