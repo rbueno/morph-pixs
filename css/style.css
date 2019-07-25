@@ -2,11 +2,11 @@
 
 .blocks-grid {
     display: grid;
-    grid-template-columns: 100px 100px 100px 100px 100px;
+    grid-template-columns: 70px 70px 70px 70px 70px;
 }
 
 .grid {
-    width: 500px;
+    width: 350px;
     margin: 0 auto;
     border: 2px solid red;
 }
@@ -14,6 +14,6 @@
 .block {
     margin: 1px;
     background: black;
-    height: 100px;
+    height: 70px;
 }
 
