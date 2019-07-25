@@ -15,17 +15,20 @@ class MorphPixs {
   }
 
   blockMoveX(clickPositionX, clickPositionColorId) {
-    if (this.x > clickPositionX) {
-      while (this.x > clickPositionX) {
-        this.x -= 1;
-      }
-    } else if (this.x < clickPositionX) {
-      while (this.x < clickPositionX) {
-        this.x += 1;
-      }
-    } else if (this.x === clickPositionX) {
-      ifBlocksMatch(this.colorId, clickPositionColorId);
-    }
+    // if (this.x > clickPositionX) {
+    //   while (this.x > clickPositionX) {
+    //     this.x -= 1;
+    //  }
+    // } else if (this.x < clickPositionX) {
+    //   while (this.x < clickPositionX) {
+    //     this.x += 1;
+    //   }
+    // } else if (this.x === clickPositionX) {
+    //   ifBlocksMatch(this.colorId, clickPositionColorId);
+    // }
+
+    this.x = clickPositionX;
+    setHeroXtoArr(this.x, this.y, this);
   }
 }
 
@@ -73,14 +76,6 @@ class GamePlay {
   // addEnemies(enemyArr) {
   //   this.arena.push(enemyArr);
   // }
-
-  ifBlocksMatch(morphColorId, morphPositionY, clickPositionColorId) {
-    if (morphColorId === clickPositionColorId) {
-      this.arena[morphPositionY + 1] = [null, null, null, null, null];
-      // morphPositionY += 1;
-    }
-  }
-
 }
 
 thePlayer = new MorphPixs (0, 2, 8);
@@ -91,8 +86,8 @@ const enemiesColorsId = [0, 1, 2, 3, 4];
 function generatesEnemies(arr) {
   let xCount = 0;
   // create enemies array
-  const enemiesSquad = arr.reduce((acc, colorID) => {
-    theEnemies = new EnemiesPixs(colorID, xCount, 9);
+  const enemiesSquad = arr.reduce((acc, colorId) => {
+    theEnemies = new EnemiesPixs(colorId, xCount, 9);
     acc.push(theEnemies);
     xCount += 1;
     return acc;
@@ -113,45 +108,72 @@ function generatesEnemies(arr) {
 
 // iterate array inside array (row of blocks)
 function moveBlocksUp() {
-
   theGame.arena.forEach((el) => {
     let newPositionY = 0;
     const tempArr = [];
     el.forEach((block) => {
       if (block !== null) {
-      block.y -= 1;
-      newPositionY = block.y;
+        block.y -= 1;
+        newPositionY = block.y;
       }
       tempArr.push(block);
-      
-
+      cancelAnimationFrame
     });
 
-     theGame.arena[newPositionY] = tempArr;
-
+    theGame.arena[newPositionY] = tempArr;
+    checkGameOver(newPositionY);
   });
   console.log("moveUP: ", theGame.arena);
 
   generatesEnemies(enemiesColorsId);
-  
+}
+
+function setHeroXtoArr(x, y, hero) {
+  theGame.arena[y] = [null, null, null, null, null];
+  theGame.arena[y][x] = hero;
+
+  ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+
+  console.log("after move x: ", theGame.arena);
+}
+
+function ifBlocksMatch(heroColorId, heroX, heroY, hero) {
+  let nextDownEnemy = theGame.arena[heroY + 1][heroX];
+
+
+  if (heroColorId === nextDownEnemy.colorId) {
+    theGame.arena[heroY] = [null, null, null, null, null];
+    theGame.arena[heroY + 1] = [null, null, null, null, null];
+    hero.y += 1; 
+    theGame.arena[heroY + 1][heroX] = hero;
+    // morphPositionY += 1;
+    console.log("color match");
+  }
 }
 
 let getClickY = 0;
 let getClickX = 0;
 document.querySelectorAll('.block').forEach((block, position) => {
   block.onclick = () => {
-    getClickY = Math.ceil((position + 1) / 5) - 1
-    getClickX = Math.ceil((position) % 5)
+    getClickX = Math.ceil((position) % 5);
+    getClickY = Math.ceil((position + 1) / 5) - 1;
 
-    //  console.log("x:" + getClickX + " y:" + getClickY)
-    
+    //  console.log("x:" + getClickX + " y:" + getClickY);
+    thePlayer.blockMoveX(getClickX, thePlayer.colorId);
   };
+  
 });
 
-
 function startGame() {
+  // add hero
+  theGame.arena[8] = [null, null, thePlayer, null, null];
 
-  theGame.arena[8] = [null, null, thePlayer, null, null]
+  // add enemies
   generatesEnemies(enemiesColorsId);
+
   console.log("Start Game: ", theGame.arena);
+}
+
+function checkGameOver(heroY) {
+  if (heroY < 0) {console.log('Game over'); }
 }
