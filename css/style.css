@@ -1,19 +1,34 @@
 
 
-.blocks-grid {
-    display: grid;
-    grid-template-columns: 70px 70px 70px 70px 70px;
-}
+
 
 .grid {
     width: 350px;
     margin: 0 auto;
     border: 2px solid red;
+    position: relative;
+
+}
+
+.blocks-grid {
+    display: grid;
+    grid-template-columns: 70px 70px 70px 70px 70px;
+    position: absolute;
+    z-index: 1;
 }
 
 .block {
-    margin: 1px;
+    
     background: black;
     height: 70px;
+    opacity: .60;   
 }
 
+.hero {
+    background: orange;
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    top: 0px;
+    left: 70px; 
+}

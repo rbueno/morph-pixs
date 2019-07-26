@@ -131,6 +131,8 @@ function moveBlocksUp() {
 function setHeroXtoArr(x, y, hero) {
   theGame.arena[y] = [null, null, null, null, null];
   theGame.arena[y][x] = hero;
+  
+  renderBlocks(hero.x, hero.y);
 
   ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
 
@@ -176,4 +178,11 @@ function startGame() {
 
 function checkGameOver(heroY) {
   if (heroY < 0) {console.log('Game over'); }
+}
+
+function renderBlocks(heroX, heroY) {
+  document.querySelector('.hero').style.left = `${heroX * 70}px`;
+  document.querySelector('.hero').style.top = `${heroY * 70}px`;
+
+  console.log('chegou no render')
 }
