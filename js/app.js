@@ -1,6 +1,7 @@
 let thePlayer;
 let theEnemies;
 let theGame;
+let countScore = 0;
 
 // Princpal Block class (the Hero's name is MorphPixs)
 class MorphPixs {
@@ -108,6 +109,7 @@ function generatesEnemies(arr) {
 
 // iterate array inside array (row of blocks)
 function moveBlocksUp() {
+  setInterval(() => {
   theGame.arena.forEach((el) => {
     let newPositionY = 0;
     const tempArr = [];
@@ -121,11 +123,13 @@ function moveBlocksUp() {
     });
 
     theGame.arena[newPositionY] = tempArr;
+    renderBlocks(thePlayer.x, thePlayer.y);
     checkGameOver(newPositionY);
   });
   console.log("moveUP: ", theGame.arena);
 
   generatesEnemies(enemiesColorsId);
+},2000)
 }
 
 function setHeroXtoArr(x, y, hero) {
@@ -134,12 +138,16 @@ function setHeroXtoArr(x, y, hero) {
   
   renderBlocks(hero.x, hero.y);
 
-  ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+  setTimeout(() => {
+    ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+  }, 300);
 
   console.log("after move x: ", theGame.arena);
 }
 
 function ifBlocksMatch(heroColorId, heroX, heroY, hero) {
+
+  
   let nextDownEnemy = theGame.arena[heroY + 1][heroX];
 
 
@@ -148,8 +156,14 @@ function ifBlocksMatch(heroColorId, heroX, heroY, hero) {
     theGame.arena[heroY + 1] = [null, null, null, null, null];
     hero.y += 1; 
     theGame.arena[heroY + 1][heroX] = hero;
+    renderBlocks(hero.x, hero.y);
     // morphPositionY += 1;
-    console.log("color match");
+    countScore += 1;
+    document.getElementById('morph').innerText = countScore;
+
+    setTimeout(() => {
+      ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+    }, 50);
   }
 }
 
@@ -169,10 +183,12 @@ document.querySelectorAll('.block').forEach((block, position) => {
 function startGame() {
   // add hero
   theGame.arena[8] = [null, null, thePlayer, null, null];
+  renderBlocks(thePlayer.x, thePlayer.y);
 
   // add enemies
   generatesEnemies(enemiesColorsId);
 
+  moveBlocksUp();
   console.log("Start Game: ", theGame.arena);
 }
 
@@ -181,8 +197,12 @@ function checkGameOver(heroY) {
 }
 
 function renderBlocks(heroX, heroY) {
-  document.querySelector('.hero').style.left = `${heroX * 70}px`;
-  document.querySelector('.hero').style.top = `${heroY * 70}px`;
+   document.querySelector('.hero').style.left = `${heroX * 70}px`;
+   document.querySelector('.hero').style.top = `${heroY * 70}px`;
+  //document.querySelector('.hero').style.transform = `translate(${heroX * 70}px, ${heroY * 70}px)`;
+  //  setAttribute('transform', `translate(${heroX * 70}px, ${heroY * 70}px)`);
 
   console.log('chegou no render')
 }
+
+
