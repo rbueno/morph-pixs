@@ -1,6 +1,6 @@
 
 
-
+*{margin: 0; padding: 0}
 
 .container {
     width: 350px;
@@ -16,18 +16,18 @@
     grid-template-columns: 70px 70px 70px 70px 70px;
     position: relative;
     z-index: 1;
+    height: 700px;
 }
 
 .block {
     margin: 0px;
     background: black;
-    height: 70px;
+    height: 100%;
     opacity: 0;   
 }
 
-.hero {
+.morph {
     position: absolute;
-    background: orange;
     height: 70px;
     width: 70px;
     color: white;
@@ -39,4 +39,46 @@
     left: 0px;
     transition: 0.3s;
     /* transition: 0.3s left, 0.3s 0.3s top; */
+}
+
+.block-geral-style {
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 70px;
+    transition: 0.3s !important;
+}
+
+.set-color-0 {
+    background: #fbb238;
+}
+
+.set-color-1 {
+    background: #8e40df;
+}
+
+.set-color-2 {
+    background: #eb4337;
+}
+
+.set-color-3 {
+    background: #43e43f;
+}
+
+.set-color-4 {
+    background: #158eb4;
+}
+
+.enemy-0 {
+    top: 0px;
+    left: 0px;
+    
+}
+
+ul {
+    list-style: none;
 }

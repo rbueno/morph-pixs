@@ -1,18 +1,20 @@
 let thePlayer;
 let theEnemies;
 let theGame;
-let countScore = 0;
+let changinId = null;
+let gameOver = false;
 
-// Princpal Block class (the Hero's name is MorphPixs)
+// Princpal Block class (the morph's name is MorphPixs)
 class MorphPixs {
-  constructor(colorId, x, y) {
-    // this.color = colorId;
-    this.colorId = 0;
+  constructor(colorId, x, y, score) {
+    this.color = 'set-color-0';
+    this.colorId = colorId;
     // this.width = 0;
     // this.heigth = 0;
+    this.type = 'hero';
     this.x = x;
     this.y = y;
-    // this.score = 1;
+    this.score = score;
   }
 
   blockMoveX(clickPositionX, clickPositionColorId) {
@@ -29,31 +31,34 @@ class MorphPixs {
     // }
 
     this.x = clickPositionX;
-    setHeroXtoArr(this.x, this.y, this);
+    setmorphXtoArr(this.x, this.y, this);
   }
 }
 
 // Enemies class (all other blocks are the enamies)
 class EnemiesPixs {
-  constructor(colorId, x, y) {
-//    this.color = '';
+  constructor(colorId, classSuffixId, x, y) {
+    //    this.color = '';
     this.colorId = colorId;
- //   this.width = 0;
- //   this.heigth = 0;
+    this.classSuffixId = classSuffixId;
+
+
+    //   this.width = 0;
+    //   this.heigth = 0;
     this.x = x;
     this.y = y;
+    this.type = 'enemy';
   //  this.speedX = 0;
   //  this.speedY = 0;
   }
 }
 
-// game constructor
-
 class GamePlay {
   constructor() {
     this.arena = [];
-    this.hero = [];
+    this.morph = [];
     this.enemy = [];
+    this.speed = 900;
   }
 
   shuffleEnemiesColor(enemiesArr) {
@@ -69,30 +74,32 @@ class GamePlay {
       enemiesArr[randomEnemy] = tempEnemy;
     }
     return enemiesArr;
-    //this.enemy[8].push(enemiesArr);
-
-    // addEnemies(this.enemy);
   }
-
-  // addEnemies(enemyArr) {
-  //   this.arena.push(enemyArr);
-  // }
 }
 
-thePlayer = new MorphPixs (0, 2, 8);
-theGame = new GamePlay ();
-const enemiesColorsId = [0, 1, 2, 3, 4];
 
+
+const enemiesColorsId = [0, 1, 2, 3, 4];
+let enemySuffixClassIdCount = 0;
 
 function generatesEnemies(arr) {
-  let xCount = 0;
+  let positionX = 0;
+  let getNewLiContent = '';
+  let getDivs = '';
+
   // create enemies array
   const enemiesSquad = arr.reduce((acc, colorId) => {
-    theEnemies = new EnemiesPixs(colorId, xCount, 9);
+    theEnemies = new EnemiesPixs(colorId, enemySuffixClassIdCount, positionX, 9);
     acc.push(theEnemies);
-    xCount += 1;
+    positionX += 1;
+    getDivs += `<div class="enemy-${enemySuffixClassIdCount}"></div>`;
+    enemySuffixClassIdCount += 1;
     return acc;
   }, []);
+
+  getNewLiContent = `<li>${getDivs}</li>`;
+
+  document.getElementById('enemies-squad').insertAdjacentHTML('beforeend', getNewLiContent);
 
   // shuffle the enemies array
   const shuffleEnemiesSquad = theGame.shuffleEnemiesColor(enemiesSquad);
@@ -105,64 +112,37 @@ function generatesEnemies(arr) {
   }, []);
 
   theGame.arena[9] = setEnemiesPositionX;
+  renderEnemies();
 }
 
-// iterate array inside array (row of blocks)
-function moveBlocksUp() {
-  setInterval(() => {
-  theGame.arena.forEach((el) => {
-    let newPositionY = 0;
-    const tempArr = [];
-    el.forEach((block) => {
-      if (block !== null) {
-        block.y -= 1;
-        newPositionY = block.y;
-      }
-      tempArr.push(block);
-      cancelAnimationFrame
-    });
-
-    theGame.arena[newPositionY] = tempArr;
-    renderBlocks(thePlayer.x, thePlayer.y);
-    checkGameOver(newPositionY);
-  });
-  console.log("moveUP: ", theGame.arena);
-
-  generatesEnemies(enemiesColorsId);
-},2000)
-}
-
-function setHeroXtoArr(x, y, hero) {
+function setmorphXtoArr(x, y, morph) {
   theGame.arena[y] = [null, null, null, null, null];
-  theGame.arena[y][x] = hero;
-  
-  renderBlocks(hero.x, hero.y);
+  theGame.arena[y][x] = morph;
+
+  renderBlocks(morph.x, morph.y);
 
   setTimeout(() => {
-    ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+    ifBlocksMatch(morph.colorId, morph.x, morph.y, morph);
   }, 300);
-
-  console.log("after move x: ", theGame.arena);
 }
 
-function ifBlocksMatch(heroColorId, heroX, heroY, hero) {
+function ifBlocksMatch(morphColorId, morphX, morphY, morph) {
+  const nextDownEnemy = theGame.arena[morphY + 1][morphX];
 
-  
-  let nextDownEnemy = theGame.arena[heroY + 1][heroX];
+  if (morphColorId === nextDownEnemy.colorId) {
+    theGame.arena[morphY] = [null, null, null, null, null];
+    theGame.arena[morphY + 1] = [null, null, null, null, null];
+    morph.y += 1;
+    theGame.arena[morphY + 1][morphX] = morph;
 
+    document.getElementById('enemies-squad').children[0].remove();
 
-  if (heroColorId === nextDownEnemy.colorId) {
-    theGame.arena[heroY] = [null, null, null, null, null];
-    theGame.arena[heroY + 1] = [null, null, null, null, null];
-    hero.y += 1; 
-    theGame.arena[heroY + 1][heroX] = hero;
-    renderBlocks(hero.x, hero.y);
-    // morphPositionY += 1;
-    countScore += 1;
-    document.getElementById('morph').innerText = countScore;
+    renderBlocks(morph.x, morph.y);
+    thePlayer.score += 1;
+    document.getElementById('morph').innerText = thePlayer.score;
 
     setTimeout(() => {
-      ifBlocksMatch(hero.colorId, hero.x, hero.y, hero);
+      ifBlocksMatch(morph.colorId, morph.x, morph.y, morph);
     }, 50);
   }
 }
@@ -173,36 +153,100 @@ document.querySelectorAll('.block').forEach((block, position) => {
   block.onclick = () => {
     getClickX = Math.ceil((position) % 5);
     getClickY = Math.ceil((position + 1) / 5) - 1;
-
-    //  console.log("x:" + getClickX + " y:" + getClickY);
+    if (!gameOver) {
     thePlayer.blockMoveX(getClickX, thePlayer.colorId);
+    }
   };
-  
 });
 
 function startGame() {
-  // add hero
+  // clear previous game
+  thePlayer = new MorphPixs(0, 2, 8, 0);
+  theGame = new GamePlay();
+
+  document.getElementById('enemies-squad').innerHTML = '';
+  document.querySelector('.morph').innerText = 'Go!';
+  gameOver = false;
+
+  
+  
+  // add morph
   theGame.arena[8] = [null, null, thePlayer, null, null];
   renderBlocks(thePlayer.x, thePlayer.y);
-
+  changeMorphId();
   // add enemies
   generatesEnemies(enemiesColorsId);
 
-  moveBlocksUp();
-  console.log("Start Game: ", theGame.arena);
+  runningGame = setInterval (moveBlocksUp, theGame.speed);
 }
 
-function checkGameOver(heroY) {
-  if (heroY < 0) {console.log('Game over'); }
+function checkGameOver(morphY) {
+  if (morphY <= 0) {
+    clearInterval(runningGame);
+    document.querySelector('.morph').innerText = '*_*';
+    gameOver = true;
+  }
 }
 
-function renderBlocks(heroX, heroY) {
-   document.querySelector('.hero').style.left = `${heroX * 70}px`;
-   document.querySelector('.hero').style.top = `${heroY * 70}px`;
-  //document.querySelector('.hero').style.transform = `translate(${heroX * 70}px, ${heroY * 70}px)`;
-  //  setAttribute('transform', `translate(${heroX * 70}px, ${heroY * 70}px)`);
-
-  console.log('chegou no render')
+function renderBlocks(morphX, morphY) {
+  document.querySelector('.morph').style.left = `${morphX * 70}px`;
+  document.querySelector('.morph').style.top = `${morphY * 70}px`;
+  
 }
 
+function renderEnemies() {
+  theGame.arena.forEach((el) => {
+    el.forEach((block) => {
+      if (block !== null && block.type === 'enemy') {
+        const getEnemyClassId = `.enemy-${block.classSuffixId}`;
+        document.querySelectorAll(getEnemyClassId).forEach((enemyClass) => {
+          enemyClass.classList.add(`set-color-${block.colorId}`);
+          enemyClass.classList.add('block-geral-style');
+          enemyClass.style.top = `${block.y * 70}px`;
+          enemyClass.style.left = `${block.x * 70}px`;
+        });
+      }
+    });
+  });
+}
 
+// iterate array inside array (row of blocks)
+function moveBlocksUp() {
+  theGame.arena.forEach((el) => {
+    let newPositionY = 0;
+    const tempArr = [];
+    el.forEach((block) => {
+      if (block !== null) {
+        block.y -= 1;
+        newPositionY = block.y;
+      }
+      tempArr.push(block);
+    });
+
+    theGame.arena[newPositionY] = tempArr;
+    renderBlocks(thePlayer.x, thePlayer.y);
+    checkGameOver(thePlayer.y);
+  });
+  generatesEnemies(enemiesColorsId);
+}
+
+function changeMorphId() {
+  if (!gameOver) {
+  // remove actual css color class
+  document.querySelector('.morph').classList.remove(thePlayer.color);
+
+  // set new id and new css color to thePlayer
+  let getRandomColor = Math.floor(Math.random() * enemiesColorsId.length);
+  console.log(getRandomColor)
+  thePlayer.colorId = getRandomColor;
+  thePlayer.color = `set-color-${thePlayer.colorId}`;
+
+  // set the thePlayer new css Color to html div player
+  document.querySelector('.morph').classList.add(thePlayer.color);
+
+  
+  setTimeout (() => {
+    changeMorphId();
+  }, 6000)
+}
+}
