@@ -4,32 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:url"           content="https://www.your-domain.com/your-page.html" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Your Website Title" />
+  <meta property="og:description"   content="Your description" />
+  <meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Morph Pixs</title>
 </head>
 
 <body>
-    <!-- Manual test buttons -->
-    <center>
-        <button onclick="startGame()">Start Game</button>
-        <button onclick="changeMorphId()">changeMorphId</button>
-        
-    </center>
-    <div class="container">
-        <div class="blocks-grid">
-            <div class="block"> - </div>
-            <div class="block"> - </div>
-            <div class="block"> - </div>
-            <div class="block"> - </div>
-            <div class="block"> - </div>
+        <audio id="bg-audio"><source src="audio/bg-audio.wav" type="audio/wav"></audio>
+        <audio id="match-audio"><source src="audio/slide01.wav" type="audio/wav"></audio>
+        <audio id="fail-audio"><source src="audio/fail.wav" type="audio/wav"></audio>
+        <audio id="level-audio"><source src="audio/level.wav" type="audio/wav"></audio>
+
+        <!-- Launc Screen - Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2> Morph Pix </h2>
+            </div>
+            <div class="modal-body">
+                <p>Tap the screen to move the Morph (block) to the right or to the left<br/><br/>
+                    Match blocks of the same color or type to keep alive.<br/><br/>
+                    Don’t reach the top of the screen, or you will die.</p>
+            </div>
+            
+            <!-- <div class="modal-playbtn"> -->
+            <label id="startBtn" class="modal-playbtn">Start Game</label>
+        <!-- </div> -->
         </div>
-
-        <div id="morph" class="morph">:)</div>
-        <ul id="enemies-squad"></ul>
-
     </div>
 
+    <!-- GameOver Screen - Modal -->
+    <div id="myGameOverModal" class="gameOverModal">
+            <div class="gameover-content">
+                <h2> Morph Pix<br>Game Over </h2>
+                <h3>Score:</h3>
+                <span id="displayScore"></span>
+                <br><br>
+                <a id="shareScoreBtn" class="modal-playbtn">Share Score</a>
+                <br><br><br><br><br>
+
+                
+                
+                <label id="playAgainBtn" class="modal-playbtn">Play Again</label>
+            </div>
+        </div>
+    
+    <section class="container">
+
+        <div class="blocks-grid"></div>
+        <div id="morph"></div>
+        <!-- <div class="cover-bottom"></div> -->
+        <ul id="enemies-squad"></ul>
+
+    </section>
+
+    <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </body>
 
