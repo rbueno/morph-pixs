@@ -326,7 +326,7 @@ function setGameLevel(level) {
       clearTimeout(selectingGameLevel);
       selectingGameLevel = setTimeout(() => {
         if (!gameOver) {
-        setGameLevel(4)
+          selectGameLevel(4)
         }
       }, 8000);
 
@@ -356,9 +356,9 @@ function setGameLevel(level) {
       clearTimeout(selectingGameLevel);
       selectingGameLevel = setTimeout(() => {
         if (!gameOver) {
-        setGameLevel(0)
+          selectGameLevel(0)
         }
-      }, 20000);
+      }, 8000);
       break;
 
     default:
