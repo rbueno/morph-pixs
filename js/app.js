@@ -347,12 +347,12 @@ function setGameLevel(level) {
       theGame.speed = 1000;
       runningGame = setInterval(moveBlocksUp, theGame.speed);
       console.log(theGame.speed);
-      el.style.setProperty('--bg-block-0', `url("../img/img-bg-0.jpg")`);
-      el.style.setProperty('--bg-block-1', `url("../img/img-bg-0.jpg")`);
-      el.style.setProperty('--bg-block-2', `url("../img/img-bg-0.jpg")`);
-      el.style.setProperty('--bg-block-3', `url("../img/img-bg-0.jpg")`);
-      el.style.setProperty('--bg-block-4', `url("../img/img-bg-0.jpg")`);
-
+      el.style.setProperty('--bg-block-0', `url("https://rbueno.github.io/morph-pixs/img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-1', `url("https://rbueno.github.io/morph-pixs/img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-2', `url("https://rbueno.github.io/morph-pixs/img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-3', `url("https://rbueno.github.io/morph-pixs/img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-4', `url("https://rbueno.github.io/morph-pixs/img/img-bg-0.jpg")`);
+      url("../img/bg-space.gif")
       clearTimeout(selectingGameLevel);
       selectingGameLevel = setTimeout(() => {
         if (!gameOver) {
