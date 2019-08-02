@@ -8,11 +8,11 @@ body {
 .container {
     /* display: inline-block; */
     width: 350px;
-    margin: 50px auto;
+    margin: auto;
     border: 2px solid red;
     background-image: url("../img/bg-blocks.gif");
     position: relative;
-    height: 700px;
+    height: 630px;
 
 }
 
@@ -176,8 +176,8 @@ ul {
 }
 
 @keyframes setNewEnemies {
-    from {top: 700px; opacity: 0}
-    to {top: 630px; opacity: 1}
+    from {top: 630px; opacity: 0}
+    to {top: 560px; opacity: 1}
 }
 
 /* @keyframes inicialScreenOut {

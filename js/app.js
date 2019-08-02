@@ -87,7 +87,7 @@ function generatesEnemies(arr) {
 
   // create enemies array
   const enemiesSquad = arr.reduce((acc, colorId) => {
-    theEnemies = new EnemiesPixs(colorId, enemySuffixClassIdCount, positionX, 9);
+    theEnemies = new EnemiesPixs(colorId, enemySuffixClassIdCount, positionX, 8);
     acc.push(theEnemies);
     positionX += 1;
     getDivs += `<div class="enemy-${enemySuffixClassIdCount}"></div>`;
@@ -109,7 +109,7 @@ function generatesEnemies(arr) {
     return acc;
   }, []);
 
-  theGame.arena[9] = setEnemiesPositionX;
+  theGame.arena[8] = setEnemiesPositionX;
   renderEnemies();
 }
 
@@ -170,7 +170,7 @@ function clickControler() {
 function startGame() {
 
   // add new Instances
-  thePlayer = new MorphPixs(0, 2, 8, 0);
+  thePlayer = new MorphPixs(0, 2, 7, 0);
   theGame = new GamePlay(900);
 
   // add controlers
@@ -188,7 +188,7 @@ function startGame() {
   gameOver = false;
 
   // add morph to the arena
-  theGame.arena[8] = [null, null, thePlayer, null, null];
+  theGame.arena[7] = [null, null, thePlayer, null, null];
   renderBlocks(thePlayer.x, thePlayer.y);
   changeMorphId();
 
@@ -326,7 +326,7 @@ function setGameLevel(level) {
       clearTimeout(selectingGameLevel);
       selectingGameLevel = setTimeout(() => {
         if (!gameOver) {
-          selectGameLevel(4)
+          selectGameLevel(0)
         }
       }, 8000);
 
