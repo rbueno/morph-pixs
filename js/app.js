@@ -171,7 +171,7 @@ function startGame() {
 
   // add new Instances
   thePlayer = new MorphPixs(0, 2, 8, 0);
-  theGame = new GamePlay(600);
+  theGame = new GamePlay(900);
 
   // add controlers
   for (let i = 0; i <= 4; i += 1) {
@@ -347,11 +347,11 @@ function setGameLevel(level) {
       theGame.speed = 1000;
       runningGame = setInterval(moveBlocksUp, theGame.speed);
       console.log(theGame.speed);
-      el.style.setProperty('--bg-block-0', `URL('../img/img-bg-0.jpg')`);
-      el.style.setProperty('--bg-block-1', `URL('../img/img-bg-1.jpg')`);
-      el.style.setProperty('--bg-block-2', `URL('../img/img-bg-2.jpg')`);
-      el.style.setProperty('--bg-block-3', `URL('../img/img-bg-3.jpg')`);
-      el.style.setProperty('--bg-block-4', `URL('../img/img-bg-4.jpg')`);
+      el.style.setProperty('--bg-block-0', `url("../img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-1', `url("../img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-2', `url("../img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-3', `url("../img/img-bg-0.jpg")`);
+      el.style.setProperty('--bg-block-4', `url("../img/img-bg-0.jpg")`);
 
       clearTimeout(selectingGameLevel);
       selectingGameLevel = setTimeout(() => {
